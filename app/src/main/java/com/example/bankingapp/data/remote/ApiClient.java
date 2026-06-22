@@ -1,7 +1,7 @@
 package com.example.bankingapp.data.remote;
 
 import retrofit2.Retrofit;
-import retrofit2.converter.gson:GsonConverterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiClient {
     // 10.0.2.2 ist der Localhost-Tunnel des Android-Emulators

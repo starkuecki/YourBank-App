@@ -9,7 +9,7 @@
         android:label="Booby Bank"
         android:roundIcon="@drawable/booby"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Material3.DayNight.NoActionBar"
+        android:theme="@style/Theme.YourBankApp"
         android:usesCleartextTraffic="true"> <activity
         android:name=".MainActivity"
         android:exported="true">

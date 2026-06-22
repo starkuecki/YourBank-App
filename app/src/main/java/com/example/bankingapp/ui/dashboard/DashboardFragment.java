@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import com.example.bankingapp.R;
+import com.example.bankingapp.data.model.Account;
 import com.example.bankingapp.data.repository.BankRepository;
 
 public class DashboardFragment extends Fragment {
