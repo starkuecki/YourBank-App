@@ -1,0 +1,26 @@
+R_DEF: Internal format may change without notice
+local
+color bg_dark
+color btn_gray
+color card_light
+color text_main
+color text_muted
+color white
+drawable booby
+drawable edittext_rounded_bg
+id bottom_navigation
+id btn_send_money
+id et_amount
+id et_purpose
+id et_recipient_iban
+id fragment_container
+id logo_icon
+id nav_dashboard
+id nav_transfer
+id tv_balance
+layout activity_main
+layout fragment_dashboard
+layout fragment_transfer
+menu bottom_nav_menu
+string app_name
+style Theme.YourBankApp

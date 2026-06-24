@@ -4,7 +4,8 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import com.example.bankingapp.ui.dashboard.DashboardFragment;
-import com.example.bankingapp.ui.transfer.TransferFragment; // Falls angelegt, sonst leeres Fragment
+import com.example.bankingapp.ui.transfer.TransferFragment;
+import com.example.bankingapp.ui.account.AccountFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
@@ -26,7 +27,9 @@ public class MainActivity extends AppCompatActivity {
             if (item.getItemId() == R.id.nav_dashboard) {
                 selectedFragment = new DashboardFragment();
             } else if (item.getItemId() == R.id.nav_transfer) {
-                selectedFragment = new TransferFragment(); // Dein Überweisungs-Fragment
+                selectedFragment = new TransferFragment();
+            } else if (item.getItemId() == R.id.nav_account) {
+                selectedFragment = new AccountFragment();
             }
 
             if (selectedFragment != null) {
