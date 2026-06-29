@@ -12,4 +12,17 @@
     <string name="hint_username">Benutzername</string>
     <string name="hint_password">Passwort</string>
     <string name="btn_login">Anmelden</string>
+
+    <!-- Dashboard Strings -->
+    <string name="welcome_message">Hey there</string>
+    <string name="welcome_user">Hey there, %s</string>
+    <string name="money_overview">Here\'s your money overview</string>
+    <string name="checking_label">CHECKING</string>
+    <string name="monthly_change">~ +2.4%% this month</string>
+
+    <!-- Transfer Strings -->
+    <string name="title_send_money">Send Money</string>
+    <string name="label_to_iban">TO (IBAN)</string>
+    <string name="label_amount">AMOUNT</string>
+    <string name="label_note">NOTE (OPTIONAL)</string>
 </resources>
