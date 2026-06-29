@@ -22,7 +22,6 @@ id logo_icon
 id nav_account
 id nav_dashboard
 id nav_transfer
-id tv_address
 id tv_balance
 id tv_iban
 id tv_name

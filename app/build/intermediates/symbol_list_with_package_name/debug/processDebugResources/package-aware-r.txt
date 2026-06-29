@@ -3558,7 +3558,6 @@ id transition_position
 id transition_scene_layoutid_cache
 id transition_transform
 id triangle
-id tv_address
 id tv_balance
 id tv_iban
 id tv_name

@@ -12,10 +12,10 @@
       </SelectionState>
       <SelectionState runConfigName="app">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2026-06-23T06:56:14.306851400Z">
+        <DropdownSelection timestamp="2026-06-29T07:30:20.752716800Z">
           <Target type="DEFAULT_BOOT">
             <handle>
-              <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\reute\.android\avd\My_Phone.avd" />
+              <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\reute\.android\avd\Pixel_8a_API_TiramisuPrivacySandbox.avd" />
             </handle>
           </Target>
         </DropdownSelection>

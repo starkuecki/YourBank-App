@@ -27,7 +27,6 @@ public class AccountFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_account, container, false);
 
         tvName = view.findViewById(R.id.tv_name);
-        tvAddress = view.findViewById(R.id.tv_address);
         tvIban = view.findViewById(R.id.tv_iban);
         btnSwitchAccount = view.findViewById(R.id.btn_switch_account);
 
