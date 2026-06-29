@@ -29,12 +29,12 @@ public final class AppDatabase_Impl extends AppDatabase {
   @Override
   @NonNull
   protected SupportSQLiteOpenHelper createOpenHelper(@NonNull final DatabaseConfiguration config) {
-    final SupportSQLiteOpenHelper.Callback _openCallback = new RoomOpenHelper(config, new RoomOpenHelper.Delegate(1) {
+    final SupportSQLiteOpenHelper.Callback _openCallback = new RoomOpenHelper(config, new RoomOpenHelper.Delegate(2) {
       @Override
       public void createAllTables(@NonNull final SupportSQLiteDatabase db) {
-        db.execSQL("CREATE TABLE IF NOT EXISTS `accounts` (`iban` TEXT NOT NULL, `balance` REAL NOT NULL, `accountType` TEXT, PRIMARY KEY(`iban`))");
+        db.execSQL("CREATE TABLE IF NOT EXISTS `accounts` (`iban` TEXT NOT NULL, `balance` REAL NOT NULL, `accountType` TEXT, `ownerName` TEXT, PRIMARY KEY(`iban`))");
         db.execSQL("CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)");
-        db.execSQL("INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'c9b06ea390061749820d97bdef9f28a9')");
+        db.execSQL("INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'f2d29ce689f67cb08e28c3919f908dec')");
       }
 
       @Override
@@ -83,10 +83,11 @@ public final class AppDatabase_Impl extends AppDatabase {
       @NonNull
       public RoomOpenHelper.ValidationResult onValidateSchema(
           @NonNull final SupportSQLiteDatabase db) {
-        final HashMap<String, TableInfo.Column> _columnsAccounts = new HashMap<String, TableInfo.Column>(3);
+        final HashMap<String, TableInfo.Column> _columnsAccounts = new HashMap<String, TableInfo.Column>(4);
         _columnsAccounts.put("iban", new TableInfo.Column("iban", "TEXT", true, 1, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsAccounts.put("balance", new TableInfo.Column("balance", "REAL", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsAccounts.put("accountType", new TableInfo.Column("accountType", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsAccounts.put("ownerName", new TableInfo.Column("ownerName", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
         final HashSet<TableInfo.ForeignKey> _foreignKeysAccounts = new HashSet<TableInfo.ForeignKey>(0);
         final HashSet<TableInfo.Index> _indicesAccounts = new HashSet<TableInfo.Index>(0);
         final TableInfo _infoAccounts = new TableInfo("accounts", _columnsAccounts, _foreignKeysAccounts, _indicesAccounts);
@@ -98,7 +99,7 @@ public final class AppDatabase_Impl extends AppDatabase {
         }
         return new RoomOpenHelper.ValidationResult(true, null);
       }
-    }, "c9b06ea390061749820d97bdef9f28a9", "1376e7be6cba4800a43fb13c630cab66");
+    }, "f2d29ce689f67cb08e28c3919f908dec", "2fd71a86d73a3de56784d246bf38d73c");
     final SupportSQLiteOpenHelper.Configuration _sqliteConfig = SupportSQLiteOpenHelper.Configuration.builder(config.context).name(config.name).callback(_openCallback).build();
     final SupportSQLiteOpenHelper _helper = config.sqliteOpenHelperFactory.create(_sqliteConfig);
     return _helper;

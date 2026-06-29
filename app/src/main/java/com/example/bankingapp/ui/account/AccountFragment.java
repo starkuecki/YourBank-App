@@ -16,7 +16,7 @@ import com.example.bankingapp.ui.login.LoginActivity;
 
 public class AccountFragment extends Fragment {
 
-    private TextView tvName, tvAddress, tvIban;
+    private TextView tvName, tvIban;
     private Button btnSwitchAccount;
     private BankRepository repository;
     private final String testIban = "DE12123456789012345678";
@@ -35,8 +35,9 @@ public class AccountFragment extends Fragment {
         repository.getAccount(testIban).observe(getViewLifecycleOwner(), account -> {
             if (account != null) {
                 tvIban.setText(account.getIban());
-                // Name und Adresse sind aktuell nicht im Modell, daher Platzhalter oder Erweiterung nötig
-                // tvName.setText(account.getOwnerName()); 
+                if (account.getOwnerName() != null) {
+                    tvName.setText(account.getOwnerName());
+                }
             }
         });
 

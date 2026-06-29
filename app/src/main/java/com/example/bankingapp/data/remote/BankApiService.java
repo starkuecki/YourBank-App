@@ -12,6 +12,6 @@ public interface BankApiService {
     @GET("accounts/{iban}")
     Call<Account> getAccountDetails(@Path("iban") String iban);
 
-    @POST("accounts/{iban}/withdrawals")
+    @POST("accounts/{iban}/withdrawal")
     Call<Void> makeWithdrawal(@Path("iban") String iban, @Body WithdrawalRequest request);
 }

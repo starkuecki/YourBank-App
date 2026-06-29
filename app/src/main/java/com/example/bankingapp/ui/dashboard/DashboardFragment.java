@@ -13,7 +13,7 @@ import com.example.bankingapp.data.model.Account;
 import com.example.bankingapp.data.repository.BankRepository;
 
 public class DashboardFragment extends Fragment {
-    private TextView tvBalance;
+    private TextView tvBalance, tvWelcomeName;
     private BankRepository repository;
     private final String testIban = "DE12123456789012345678"; // Deine Test-IBAN aus der API
 
@@ -22,6 +22,7 @@ public class DashboardFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_dashboard, container, false);
         tvBalance = view.findViewById(R.id.tv_balance);
+        tvWelcomeName = view.findViewById(R.id.tv_welcome_name);
 
         repository = new BankRepository(requireActivity().getApplication());
 
@@ -30,6 +31,9 @@ public class DashboardFragment extends Fragment {
         repository.getAccount(testIban).observe(getViewLifecycleOwner(), account -> {
             if (account != null) {
                 tvBalance.setText(String.format("$ %,.2f", account.getBalance()));
+                if (account.getOwnerName() != null) {
+                    tvWelcomeName.setText(getString(R.string.welcome_user, account.getOwnerName()));
+                }
             }
         });
 

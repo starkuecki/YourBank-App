@@ -3560,6 +3560,7 @@ int id triangle 0x7f0801e4
 int id tv_balance 0x7f0801e5
 int id tv_iban 0x7f0801e6
 int id tv_name 0x7f0801e7
+int id tv_welcome_name 0x7f0801ff
 int id unchecked 0x7f0801e8
 int id uniform 0x7f0801e9
 int id unlabeled 0x7f0801ea

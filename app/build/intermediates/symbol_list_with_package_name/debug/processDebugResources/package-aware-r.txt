@@ -3561,6 +3561,7 @@ id triangle
 id tv_balance
 id tv_iban
 id tv_name
+id tv_welcome_name
 id unchecked
 id uniform
 id unlabeled

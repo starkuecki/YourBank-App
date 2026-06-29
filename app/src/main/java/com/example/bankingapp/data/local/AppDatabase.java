@@ -6,7 +6,7 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import com.example.bankingapp.data.model.Account;
 
-@Database(entities = {Account.class}, version = 1, exportSchema = false)
+@Database(entities = {Account.class}, version = 2, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
     public abstract AccountDao accountDao();
     private static volatile AppDatabase INSTANCE;
@@ -16,7 +16,9 @@ public abstract class AppDatabase extends RoomDatabase {
             synchronized (AppDatabase.class) {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
-                            AppDatabase.class, "bank_database").build();
+                                    AppDatabase.class, "bank_database")
+                            .fallbackToDestructiveMigration()
+                            .build();
                 }
             }
         }

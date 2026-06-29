@@ -11,12 +11,14 @@ public class Account {
     private String iban;
     private double balance;
     private String accountType;
+    private String ownerName;
 
     // Konstruktor, Getter und Setter
-    public Account(@NonNull String iban, double balance, String accountType) {
+    public Account(@NonNull String iban, double balance, String accountType, String ownerName) {
         this.iban = iban;
         this.balance = balance;
         this.accountType = accountType;
+        this.ownerName = ownerName;
     }
 
     @NonNull public String getIban() { return iban; }
@@ -25,4 +27,6 @@ public class Account {
     public void setBalance(double balance) { this.balance = balance; }
     public String getAccountType() { return accountType; }
     public void setAccountType(String accountType) { this.accountType = accountType; }
+    public String getOwnerName() { return ownerName; }
+    public void setOwnerName(String ownerName) { this.ownerName = ownerName; }
 }

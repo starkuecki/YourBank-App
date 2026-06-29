@@ -32,7 +32,7 @@ public final class AccountDao_Impl implements AccountDao {
       @Override
       @NonNull
       protected String createQuery() {
-        return "INSERT OR REPLACE INTO `accounts` (`iban`,`balance`,`accountType`) VALUES (?,?,?)";
+        return "INSERT OR REPLACE INTO `accounts` (`iban`,`balance`,`accountType`,`ownerName`) VALUES (?,?,?,?)";
       }
 
       @Override
@@ -47,6 +47,11 @@ public final class AccountDao_Impl implements AccountDao {
           statement.bindNull(3);
         } else {
           statement.bindString(3, entity.getAccountType());
+        }
+        if (entity.getOwnerName() == null) {
+          statement.bindNull(4);
+        } else {
+          statement.bindString(4, entity.getOwnerName());
         }
       }
     };
@@ -83,6 +88,7 @@ public final class AccountDao_Impl implements AccountDao {
           final int _cursorIndexOfIban = CursorUtil.getColumnIndexOrThrow(_cursor, "iban");
           final int _cursorIndexOfBalance = CursorUtil.getColumnIndexOrThrow(_cursor, "balance");
           final int _cursorIndexOfAccountType = CursorUtil.getColumnIndexOrThrow(_cursor, "accountType");
+          final int _cursorIndexOfOwnerName = CursorUtil.getColumnIndexOrThrow(_cursor, "ownerName");
           final Account _result;
           if (_cursor.moveToFirst()) {
             final String _tmpIban;
@@ -99,7 +105,13 @@ public final class AccountDao_Impl implements AccountDao {
             } else {
               _tmpAccountType = _cursor.getString(_cursorIndexOfAccountType);
             }
-            _result = new Account(_tmpIban,_tmpBalance,_tmpAccountType);
+            final String _tmpOwnerName;
+            if (_cursor.isNull(_cursorIndexOfOwnerName)) {
+              _tmpOwnerName = null;
+            } else {
+              _tmpOwnerName = _cursor.getString(_cursorIndexOfOwnerName);
+            }
+            _result = new Account(_tmpIban,_tmpBalance,_tmpAccountType,_tmpOwnerName);
           } else {
             _result = null;
           }
