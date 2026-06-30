@@ -47,16 +47,14 @@ public class BankRepository {
         String passwordHash = sha256(password);
         
         executorService.execute(() -> {
-            // Alte Datenreste sicherheitshalber löschen
-            prefs.edit().remove("logged_in_iban").apply();
-
             // 1. Offline-Check
             Customer localCustomer = customerDao.getCustomerByName(username);
             if (localCustomer != null) {
                 if (localCustomer.getPassword().equals(passwordHash)) {
                     saveLoginPrefs(username, passwordHash);
-                    // Wir laden die Accounts und rufen ERST DANN onSuccess auf
-                    fetchAndSaveAccounts(username, passwordHash, localCustomer.getId(), callback);
+                    // Bei Offline-Login: Sofort Erfolg melden, Accounts im Hintergrund laden
+                    fetchAndSaveAccounts(username, passwordHash, localCustomer.getId(), null);
+                    callback.onSuccess();
                     return;
                 } else {
                     callback.onError("Benutzername oder Passwort falsch");
@@ -80,7 +78,7 @@ public class BankRepository {
                                 executorService.execute(() -> {
                                     customerDao.saveCustomer(customer);
                                     saveLoginPrefs(customer.getName(), passwordHash);
-                                    // Wir laden die Accounts und rufen ERST DANN onSuccess auf
+                                    // Bei Online-Login: Wir warten auf die Konten für das erste Mal
                                     fetchAndSaveAccounts(customer.getName(), passwordHash, customer.getId(), callback);
                                 });
                                 return;
@@ -105,18 +103,25 @@ public class BankRepository {
                 if (response.isSuccessful() && response.body() != null) {
                     executorService.execute(() -> {
                         String primaryIban = null;
+                        String firstIbanOfUser = null;
+
                         for (Account acc : response.body()) {
                             accountDao.saveAccount(acc);
-                            if (ownerId.equals(acc.getOwnerId()) && "current".equalsIgnoreCase(acc.getAccountType())) {
-                                if (primaryIban == null) primaryIban = acc.getIban();
+                            if (ownerId.equals(acc.getOwnerId())) {
+                                if (firstIbanOfUser == null) firstIbanOfUser = acc.getIban();
+                                if ("current".equalsIgnoreCase(acc.getAccountType())) {
+                                    if (primaryIban == null) primaryIban = acc.getIban();
+                                }
                             }
                         }
                         
-                        if (primaryIban != null) {
-                            prefs.edit().putString("logged_in_iban", primaryIban).apply();
+                        // Priorität: 1. Current Account, 2. Irgendein Account des Users
+                        String ibanToSet = (primaryIban != null) ? primaryIban : firstIbanOfUser;
+                        
+                        if (ibanToSet != null) {
+                            prefs.edit().putString("logged_in_iban", ibanToSet).apply();
                         }
                         
-                        // JETZT erst ist der Login-Prozess wirklich fertig
                         if (callback != null) callback.onSuccess();
                     });
                 } else {
@@ -125,6 +130,7 @@ public class BankRepository {
             }
             @Override
             public void onFailure(Call<List<Account>> call, Throwable t) {
+                // Wenn im Hintergrund geladen wird (callback == null), ignorieren wir Fehler
                 if (callback != null) callback.onError("Netzwerkfehler beim Laden der Konten");
             }
         });

@@ -21,7 +21,6 @@
     <string name="label_to_iban">TO (IBAN)</string>
     <string name="login_title">Booby Bank Login</string>
     <string name="money_overview">Here\'s your money overview</string>
-    <string name="monthly_change">~ +2.4%% this month</string>
     <string name="nav_account">Account</string>
     <string name="nav_dashboard">Dashboard</string>
     <string name="nav_transfer">Send Money</string>

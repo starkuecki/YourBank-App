@@ -57,7 +57,6 @@ string label_note
 string label_to_iban
 string login_title
 string money_overview
-string monthly_change
 string nav_account
 string nav_dashboard
 string nav_transfer

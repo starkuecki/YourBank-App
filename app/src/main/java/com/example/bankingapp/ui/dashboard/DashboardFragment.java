@@ -58,6 +58,11 @@ public class DashboardFragment extends Fragment {
                     pbLoading.setVisibility(View.GONE);
                 }
             });
+        } else {
+            // Kein Konto gefunden
+            tvBalance.setText("$ 0.00");
+            tvBalance.setAlpha(1.0f);
+            pbLoading.setVisibility(View.GONE);
         }
 
         // Klick auf den schwarzen Kasten -> Transaktionen öffnen

@@ -98,14 +98,6 @@
                     android:layout_gravity="center"
                     android:indeterminateTint="@color/white" />
             </FrameLayout>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/monthly_change"
-                android:textColor="#52C41A"
-                android:textSize="12sp"
-                android:layout_marginTop="16dp" />
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 
