@@ -13,10 +13,12 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import com.example.bankingapp.R;
 import com.example.bankingapp.data.repository.BankRepository;
+import com.google.android.material.card.MaterialCardView;
 
 public class DashboardFragment extends Fragment {
     private TextView tvBalance, tvWelcomeName;
     private ProgressBar pbLoading;
+    private MaterialCardView cardBalance;
     private BankRepository repository;
 
     @Nullable
@@ -26,6 +28,7 @@ public class DashboardFragment extends Fragment {
         tvBalance = view.findViewById(R.id.tv_balance);
         tvWelcomeName = view.findViewById(R.id.tv_welcome_name);
         pbLoading = view.findViewById(R.id.pb_balance_loading);
+        cardBalance = view.findViewById(R.id.card_balance);
 
         repository = new BankRepository(requireActivity().getApplication());
 
@@ -51,12 +54,20 @@ public class DashboardFragment extends Fragment {
             repository.getAccount(loggedInIban).observe(getViewLifecycleOwner(), account -> {
                 if (account != null) {
                     tvBalance.setText(String.format("$ %,.2f", account.getBalance()));
-                    // Ladezustand beenden
                     tvBalance.setAlpha(1.0f);
                     pbLoading.setVisibility(View.GONE);
                 }
             });
         }
+
+        // Klick auf den schwarzen Kasten -> Transaktionen öffnen
+        cardBalance.setOnClickListener(v -> {
+            Fragment transactionsFragment = new TransactionsFragment();
+            getParentFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container, transactionsFragment)
+                    .addToBackStack(null)
+                    .commit();
+        });
 
         return view;
     }

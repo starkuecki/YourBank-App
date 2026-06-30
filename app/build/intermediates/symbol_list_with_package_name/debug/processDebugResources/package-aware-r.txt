@@ -3172,6 +3172,7 @@ id bounce
 id bounceBoth
 id bounceEnd
 id bounceStart
+id btn_back
 id btn_login
 id btn_send_money
 id btn_switch_account
@@ -3179,6 +3180,7 @@ id buttonPanel
 id cache_measures
 id callMeasure
 id cancel_button
+id card_balance
 id carryVelocity
 id center
 id centerCrop
@@ -3452,6 +3454,7 @@ id right_icon
 id right_side
 id rounded
 id row_index_key
+id rv_transactions
 id save_non_transition_alpha
 id save_overlay_view
 id sawtooth
@@ -3563,6 +3566,9 @@ id tv_balance
 id tv_city
 id tv_iban
 id tv_name
+id tv_transaction_amount
+id tv_transaction_date
+id tv_transaction_purpose
 id tv_welcome_name
 id unchecked
 id uniform
@@ -3721,7 +3727,9 @@ layout design_text_input_end_icon
 layout design_text_input_start_icon
 layout fragment_account
 layout fragment_dashboard
+layout fragment_transactions
 layout fragment_transfer
+layout item_transaction
 layout m3_alert_dialog
 layout m3_alert_dialog_actions
 layout m3_alert_dialog_title

@@ -2,6 +2,7 @@ package com.example.bankingapp.data.remote;
 
 import com.example.bankingapp.data.model.Account;
 import com.example.bankingapp.data.model.Customer;
+import com.example.bankingapp.data.model.Transaction;
 import com.example.bankingapp.data.model.WithdrawalRequest;
 import java.util.List;
 import retrofit2.Call;
@@ -39,7 +40,7 @@ public interface BankApiService {
 
     // Transactions
     @GET("v1/accounts/{iban}/transactions")
-    Call<List<Object>> getTransactions(@Path("iban") String iban);
+    Call<List<Transaction>> getTransactions(@Path("iban") String iban);
 
     // Customers
     @GET("v1/customers")

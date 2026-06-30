@@ -9,6 +9,7 @@ import com.example.bankingapp.data.local.CustomerDao;
 import com.example.bankingapp.data.local.AppDatabase;
 import com.example.bankingapp.data.model.Account;
 import com.example.bankingapp.data.model.Customer;
+import com.example.bankingapp.data.model.Transaction;
 import com.example.bankingapp.data.model.WithdrawalRequest;
 import com.example.bankingapp.data.remote.ApiClient;
 import com.example.bankingapp.data.remote.BankApiService;
@@ -46,17 +47,16 @@ public class BankRepository {
         String passwordHash = sha256(password);
         
         executorService.execute(() -> {
+            // Alte Datenreste sicherheitshalber löschen
+            prefs.edit().remove("logged_in_iban").apply();
+
             // 1. Offline-Check
             Customer localCustomer = customerDao.getCustomerByName(username);
             if (localCustomer != null) {
                 if (localCustomer.getPassword().equals(passwordHash)) {
-                    // Login-Daten speichern
                     saveLoginPrefs(username, passwordHash);
-                    
-                    // WICHTIG: IBAN für diesen User aktualisieren (Hintergrund)
-                    updateActiveIbanForUser(localCustomer.getId());
-                    
-                    callback.onSuccess();
+                    // Wir laden die Accounts und rufen ERST DANN onSuccess auf
+                    fetchAndSaveAccounts(username, passwordHash, localCustomer.getId(), callback);
                     return;
                 } else {
                     callback.onError("Benutzername oder Passwort falsch");
@@ -79,11 +79,10 @@ public class BankRepository {
                             if (customer.getName().equalsIgnoreCase(username)) {
                                 executorService.execute(() -> {
                                     customerDao.saveCustomer(customer);
-                                    // Wir speichern den offiziellen Namen aus der API (Groß/Kleinschreibung!)
                                     saveLoginPrefs(customer.getName(), passwordHash);
-                                    fetchAndSaveAccounts(customer.getName(), passwordHash, customer.getId());
+                                    // Wir laden die Accounts und rufen ERST DANN onSuccess auf
+                                    fetchAndSaveAccounts(customer.getName(), passwordHash, customer.getId(), callback);
                                 });
-                                callback.onSuccess();
                                 return;
                             }
                         }
@@ -99,17 +98,7 @@ public class BankRepository {
         });
     }
 
-    // Sucht lokal nach dem primären Konto des Users und setzt die IBAN
-    private void updateActiveIbanForUser(String ownerId) {
-        // Wir triggern einfach ein schnelles Background-Update
-        String user = prefs.getString("auth_user", null);
-        String passHash = prefs.getString("auth_pass_hash", null);
-        if (user != null && passHash != null) {
-            fetchAndSaveAccounts(user, passHash, ownerId);
-        }
-    }
-
-    private void fetchAndSaveAccounts(String user, String passHash, String ownerId) {
+    private void fetchAndSaveAccounts(String user, String passHash, String ownerId, LoginCallback callback) {
         ApiClient.getApiService(user, passHash).getAllAccounts().enqueue(new Callback<List<Account>>() {
             @Override
             public void onResponse(Call<List<Account>> call, Response<List<Account>> response) {
@@ -118,21 +107,26 @@ public class BankRepository {
                         String primaryIban = null;
                         for (Account acc : response.body()) {
                             accountDao.saveAccount(acc);
-                            // Filter auf den eingeloggten User + Typ 'current'
                             if (ownerId.equals(acc.getOwnerId()) && "current".equalsIgnoreCase(acc.getAccountType())) {
                                 if (primaryIban == null) primaryIban = acc.getIban();
                             }
                         }
                         
-                        // Wenn wir ein passendes Konto gefunden haben, setzen wir es als aktiv
                         if (primaryIban != null) {
                             prefs.edit().putString("logged_in_iban", primaryIban).apply();
                         }
+                        
+                        // JETZT erst ist der Login-Prozess wirklich fertig
+                        if (callback != null) callback.onSuccess();
                     });
+                } else {
+                    if (callback != null) callback.onError("Fehler beim Laden der Kontodaten");
                 }
             }
             @Override
-            public void onFailure(Call<List<Account>> call, Throwable t) {}
+            public void onFailure(Call<List<Account>> call, Throwable t) {
+                if (callback != null) callback.onError("Netzwerkfehler beim Laden der Konten");
+            }
         });
     }
 
@@ -171,6 +165,10 @@ public class BankRepository {
         String currentTimestamp = java.time.ZonedDateTime.now().toString();
         WithdrawalRequest request = new WithdrawalRequest(amount, purpose, currentTimestamp);
         getAuthApiService().makeWithdrawal(iban, request).enqueue(callback);
+    }
+
+    public void getTransactions(String iban, Callback<List<Transaction>> callback) {
+        getAuthApiService().getTransactions(iban).enqueue(callback);
     }
 
     private String sha256(String base) {
