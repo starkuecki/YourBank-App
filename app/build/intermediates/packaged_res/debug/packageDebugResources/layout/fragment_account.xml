@@ -22,7 +22,19 @@
         android:id="@+id/tv_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="John Doe"
+        android:text="..."
+        android:layout_marginBottom="16dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="City:"
+        android:textStyle="bold"/>
+    <TextView
+        android:id="@+id/tv_city"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="..."
         android:layout_marginBottom="16dp"/>
 
     <TextView
@@ -34,7 +46,7 @@
         android:id="@+id/tv_iban"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="DE12 1234 5678 9012 3456 78"
+        android:text="..."
         android:layout_marginBottom="32dp"/>
 
     <Button

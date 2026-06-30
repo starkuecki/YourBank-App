@@ -3432,6 +3432,7 @@ id parent_matrix
 id password_toggle
 id path
 id pathRelative
+id pb_balance_loading
 id peekHeight
 id percent
 id pin
@@ -3559,6 +3560,7 @@ id transition_scene_layoutid_cache
 id transition_transform
 id triangle
 id tv_balance
+id tv_city
 id tv_iban
 id tv_name
 id tv_welcome_name
@@ -3825,6 +3827,7 @@ string btn_switch_account
 string character_counter_content_description
 string character_counter_overflowed_content_description
 string character_counter_pattern
+string checking_label
 string clear_text_end_icon_content_description
 string error_a11y_label
 string error_icon_content_description
@@ -3837,8 +3840,11 @@ string hint_username
 string icon_content_description
 string item_view_role_description
 string label_address
+string label_amount
 string label_iban
 string label_name
+string label_note
+string label_to_iban
 string login_title
 string m3_exceed_max_badge_text_suffix
 string m3_ref_typeface_brand_medium
@@ -3878,6 +3884,8 @@ string material_timepicker_minute
 string material_timepicker_pm
 string material_timepicker_select_time
 string material_timepicker_text_input_mode_description
+string money_overview
+string monthly_change
 string mtrl_badge_numberless_content_description
 string mtrl_checkbox_button_icon_path_checked
 string mtrl_checkbox_button_icon_path_group_name
@@ -3955,6 +3963,9 @@ string searchview_navigation_content_description
 string side_sheet_accessibility_pane_title
 string side_sheet_behavior
 string status_bar_notification_info_overflow
+string title_send_money
+string welcome_message
+string welcome_user
 style AlertDialog_AppCompat
 style AlertDialog_AppCompat_Light
 style Animation_AppCompat_Dialog

@@ -10,15 +10,24 @@
     <string name="app_name">Booby Bank</string>
     <string name="btn_login">Anmelden</string>
     <string name="btn_switch_account">Konto wechseln</string>
+    <string name="checking_label">CHECKING</string>
     <string name="hint_password">Passwort</string>
     <string name="hint_username">Benutzername</string>
     <string name="label_address">Address:</string>
+    <string name="label_amount">AMOUNT</string>
     <string name="label_iban">IBAN:</string>
     <string name="label_name">Name:</string>
+    <string name="label_note">NOTE (OPTIONAL)</string>
+    <string name="label_to_iban">TO (IBAN)</string>
     <string name="login_title">Booby Bank Login</string>
+    <string name="money_overview">Here\'s your money overview</string>
+    <string name="monthly_change">~ +2.4%% this month</string>
     <string name="nav_account">Account</string>
     <string name="nav_dashboard">Dashboard</string>
     <string name="nav_transfer">Send Money</string>
+    <string name="title_send_money">Send Money</string>
+    <string name="welcome_message">Hey there</string>
+    <string name="welcome_user">Hey there, %s</string>
     <style name="Theme.YourBankApp" parent="Theme.Material3.DayNight.NoActionBar">
         
         <item name="colorPrimary">@color/bg_dark</item>

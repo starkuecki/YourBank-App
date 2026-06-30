@@ -29,7 +29,7 @@
         android:theme="@style/Theme.YourBankApp"
         android:usesCleartextTraffic="true" >
         <activity
-            android:name="com.example.bankingapp.MainActivity"
+            android:name="com.example.bankingapp.ui.login.LoginActivity"
             android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -38,7 +38,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.example.bankingapp.ui.login.LoginActivity"
+            android:name="com.example.bankingapp.MainActivity"
             android:exported="false" />
 
         <service

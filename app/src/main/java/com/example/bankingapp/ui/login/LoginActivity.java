@@ -8,11 +8,13 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.bankingapp.MainActivity;
 import com.example.bankingapp.R;
+import com.example.bankingapp.data.repository.BankRepository;
 
 public class LoginActivity extends AppCompatActivity {
 
     private EditText etUsername, etPassword;
     private Button btnLogin;
+    private BankRepository repository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,15 +25,30 @@ public class LoginActivity extends AppCompatActivity {
         etPassword = findViewById(R.id.et_password);
         btnLogin = findViewById(R.id.btn_login);
 
-        btnLogin.setOnClickListener(v -> {
-            String username = etUsername.getText().toString();
-            String password = etPassword.getText().toString();
+        repository = new BankRepository(getApplication());
 
-            // Einfache Validierung (Platzhalter)
+        btnLogin.setOnClickListener(v -> {
+            String username = etUsername.getText().toString().trim();
+            String password = etPassword.getText().toString().trim();
+
             if (!username.isEmpty() && !password.isEmpty()) {
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                startActivity(intent);
-                finish();
+                repository.login(username, password, new BankRepository.LoginCallback() {
+                    @Override
+                    public void onSuccess() {
+                        runOnUiThread(() -> {
+                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                            startActivity(intent);
+                            finish();
+                        });
+                    }
+
+                    @Override
+                    public void onError(String message) {
+                        runOnUiThread(() -> 
+                            Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show()
+                        );
+                    }
+                });
             } else {
                 Toast.makeText(this, "Bitte alle Felder ausfüllen", Toast.LENGTH_SHORT).show();
             }

@@ -1,6 +1,8 @@
 package com.example.bankingapp.ui.account;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,10 +18,9 @@ import com.example.bankingapp.ui.login.LoginActivity;
 
 public class AccountFragment extends Fragment {
 
-    private TextView tvName, tvIban;
+    private TextView tvName, tvIban, tvCity;
     private Button btnSwitchAccount;
     private BankRepository repository;
-    private final String testIban = "DE12123456789012345678";
 
     @Nullable
     @Override
@@ -27,24 +28,39 @@ public class AccountFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_account, container, false);
 
         tvName = view.findViewById(R.id.tv_name);
+        tvCity = view.findViewById(R.id.tv_city);
         tvIban = view.findViewById(R.id.tv_iban);
         btnSwitchAccount = view.findViewById(R.id.btn_switch_account);
 
         repository = new BankRepository(requireActivity().getApplication());
 
-        repository.getAccount(testIban).observe(getViewLifecycleOwner(), account -> {
-            if (account != null) {
-                tvIban.setText(account.getIban());
-                if (account.getOwnerName() != null) {
-                    tvName.setText(account.getOwnerName());
+        SharedPreferences prefs = requireActivity().getSharedPreferences("BankPrefs", Context.MODE_PRIVATE);
+        String loggedInIban = prefs.getString("logged_in_iban", null);
+        String authUser = prefs.getString("auth_user", null);
+
+        // Name und Stadt vom Customer laden
+        if (authUser != null) {
+            repository.getCustomer(authUser).observe(getViewLifecycleOwner(), customer -> {
+                if (customer != null) {
+                    tvName.setText(customer.getName());
+                    tvCity.setText(customer.getCity());
                 }
-            }
-        });
+            });
+        }
+
+        // IBAN vom Account laden
+        if (loggedInIban != null) {
+            repository.getAccount(loggedInIban).observe(getViewLifecycleOwner(), account -> {
+                if (account != null) {
+                    tvIban.setText(account.getIban());
+                }
+            });
+        }
 
         btnSwitchAccount.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), LoginActivity.class);
             startActivity(intent);
-            getActivity().finish(); // Optional: MainActivity schließen
+            getActivity().finish();
         });
 
         return view;

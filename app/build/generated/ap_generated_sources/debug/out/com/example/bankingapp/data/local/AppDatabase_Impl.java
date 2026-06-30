@@ -26,20 +26,24 @@ import java.util.Set;
 public final class AppDatabase_Impl extends AppDatabase {
   private volatile AccountDao _accountDao;
 
+  private volatile CustomerDao _customerDao;
+
   @Override
   @NonNull
   protected SupportSQLiteOpenHelper createOpenHelper(@NonNull final DatabaseConfiguration config) {
-    final SupportSQLiteOpenHelper.Callback _openCallback = new RoomOpenHelper(config, new RoomOpenHelper.Delegate(2) {
+    final SupportSQLiteOpenHelper.Callback _openCallback = new RoomOpenHelper(config, new RoomOpenHelper.Delegate(4) {
       @Override
       public void createAllTables(@NonNull final SupportSQLiteDatabase db) {
-        db.execSQL("CREATE TABLE IF NOT EXISTS `accounts` (`iban` TEXT NOT NULL, `balance` REAL NOT NULL, `accountType` TEXT, `ownerName` TEXT, PRIMARY KEY(`iban`))");
+        db.execSQL("CREATE TABLE IF NOT EXISTS `accounts` (`iban` TEXT NOT NULL, `balance` REAL NOT NULL, `accountType` TEXT, `ownerName` TEXT, `ownerId` TEXT, PRIMARY KEY(`iban`))");
+        db.execSQL("CREATE TABLE IF NOT EXISTS `customers` (`id` TEXT NOT NULL, `name` TEXT, `city` TEXT, `password` TEXT, PRIMARY KEY(`id`))");
         db.execSQL("CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)");
-        db.execSQL("INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'f2d29ce689f67cb08e28c3919f908dec')");
+        db.execSQL("INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '3e4483324ffa65c266e9dc17099e5d7a')");
       }
 
       @Override
       public void dropAllTables(@NonNull final SupportSQLiteDatabase db) {
         db.execSQL("DROP TABLE IF EXISTS `accounts`");
+        db.execSQL("DROP TABLE IF EXISTS `customers`");
         final List<? extends RoomDatabase.Callback> _callbacks = mCallbacks;
         if (_callbacks != null) {
           for (RoomDatabase.Callback _callback : _callbacks) {
@@ -83,11 +87,12 @@ public final class AppDatabase_Impl extends AppDatabase {
       @NonNull
       public RoomOpenHelper.ValidationResult onValidateSchema(
           @NonNull final SupportSQLiteDatabase db) {
-        final HashMap<String, TableInfo.Column> _columnsAccounts = new HashMap<String, TableInfo.Column>(4);
+        final HashMap<String, TableInfo.Column> _columnsAccounts = new HashMap<String, TableInfo.Column>(5);
         _columnsAccounts.put("iban", new TableInfo.Column("iban", "TEXT", true, 1, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsAccounts.put("balance", new TableInfo.Column("balance", "REAL", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsAccounts.put("accountType", new TableInfo.Column("accountType", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsAccounts.put("ownerName", new TableInfo.Column("ownerName", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsAccounts.put("ownerId", new TableInfo.Column("ownerId", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
         final HashSet<TableInfo.ForeignKey> _foreignKeysAccounts = new HashSet<TableInfo.ForeignKey>(0);
         final HashSet<TableInfo.Index> _indicesAccounts = new HashSet<TableInfo.Index>(0);
         final TableInfo _infoAccounts = new TableInfo("accounts", _columnsAccounts, _foreignKeysAccounts, _indicesAccounts);
@@ -97,9 +102,23 @@ public final class AppDatabase_Impl extends AppDatabase {
                   + " Expected:\n" + _infoAccounts + "\n"
                   + " Found:\n" + _existingAccounts);
         }
+        final HashMap<String, TableInfo.Column> _columnsCustomers = new HashMap<String, TableInfo.Column>(4);
+        _columnsCustomers.put("id", new TableInfo.Column("id", "TEXT", true, 1, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsCustomers.put("name", new TableInfo.Column("name", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsCustomers.put("city", new TableInfo.Column("city", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsCustomers.put("password", new TableInfo.Column("password", "TEXT", false, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        final HashSet<TableInfo.ForeignKey> _foreignKeysCustomers = new HashSet<TableInfo.ForeignKey>(0);
+        final HashSet<TableInfo.Index> _indicesCustomers = new HashSet<TableInfo.Index>(0);
+        final TableInfo _infoCustomers = new TableInfo("customers", _columnsCustomers, _foreignKeysCustomers, _indicesCustomers);
+        final TableInfo _existingCustomers = TableInfo.read(db, "customers");
+        if (!_infoCustomers.equals(_existingCustomers)) {
+          return new RoomOpenHelper.ValidationResult(false, "customers(com.example.bankingapp.data.model.Customer).\n"
+                  + " Expected:\n" + _infoCustomers + "\n"
+                  + " Found:\n" + _existingCustomers);
+        }
         return new RoomOpenHelper.ValidationResult(true, null);
       }
-    }, "f2d29ce689f67cb08e28c3919f908dec", "2fd71a86d73a3de56784d246bf38d73c");
+    }, "3e4483324ffa65c266e9dc17099e5d7a", "c9f41b9f6a87a524943fe211119630ed");
     final SupportSQLiteOpenHelper.Configuration _sqliteConfig = SupportSQLiteOpenHelper.Configuration.builder(config.context).name(config.name).callback(_openCallback).build();
     final SupportSQLiteOpenHelper _helper = config.sqliteOpenHelperFactory.create(_sqliteConfig);
     return _helper;
@@ -110,7 +129,7 @@ public final class AppDatabase_Impl extends AppDatabase {
   protected InvalidationTracker createInvalidationTracker() {
     final HashMap<String, String> _shadowTablesMap = new HashMap<String, String>(0);
     final HashMap<String, Set<String>> _viewTables = new HashMap<String, Set<String>>(0);
-    return new InvalidationTracker(this, _shadowTablesMap, _viewTables, "accounts");
+    return new InvalidationTracker(this, _shadowTablesMap, _viewTables, "accounts","customers");
   }
 
   @Override
@@ -120,6 +139,7 @@ public final class AppDatabase_Impl extends AppDatabase {
     try {
       super.beginTransaction();
       _db.execSQL("DELETE FROM `accounts`");
+      _db.execSQL("DELETE FROM `customers`");
       super.setTransactionSuccessful();
     } finally {
       super.endTransaction();
@@ -135,6 +155,7 @@ public final class AppDatabase_Impl extends AppDatabase {
   protected Map<Class<?>, List<Class<?>>> getRequiredTypeConverters() {
     final HashMap<Class<?>, List<Class<?>>> _typeConvertersMap = new HashMap<Class<?>, List<Class<?>>>();
     _typeConvertersMap.put(AccountDao.class, AccountDao_Impl.getRequiredConverters());
+    _typeConvertersMap.put(CustomerDao.class, CustomerDao_Impl.getRequiredConverters());
     return _typeConvertersMap;
   }
 
@@ -163,6 +184,20 @@ public final class AppDatabase_Impl extends AppDatabase {
           _accountDao = new AccountDao_Impl(this);
         }
         return _accountDao;
+      }
+    }
+  }
+
+  @Override
+  public CustomerDao customerDao() {
+    if (_customerDao != null) {
+      return _customerDao;
+    } else {
+      synchronized(this) {
+        if(_customerDao == null) {
+          _customerDao = new CustomerDao_Impl(this);
+        }
+        return _customerDao;
       }
     }
   }

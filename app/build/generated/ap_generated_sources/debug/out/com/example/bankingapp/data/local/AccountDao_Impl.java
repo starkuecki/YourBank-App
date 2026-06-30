@@ -32,7 +32,7 @@ public final class AccountDao_Impl implements AccountDao {
       @Override
       @NonNull
       protected String createQuery() {
-        return "INSERT OR REPLACE INTO `accounts` (`iban`,`balance`,`accountType`,`ownerName`) VALUES (?,?,?,?)";
+        return "INSERT OR REPLACE INTO `accounts` (`iban`,`balance`,`accountType`,`ownerName`,`ownerId`) VALUES (?,?,?,?,?)";
       }
 
       @Override
@@ -52,6 +52,11 @@ public final class AccountDao_Impl implements AccountDao {
           statement.bindNull(4);
         } else {
           statement.bindString(4, entity.getOwnerName());
+        }
+        if (entity.getOwnerId() == null) {
+          statement.bindNull(5);
+        } else {
+          statement.bindString(5, entity.getOwnerId());
         }
       }
     };
@@ -89,6 +94,7 @@ public final class AccountDao_Impl implements AccountDao {
           final int _cursorIndexOfBalance = CursorUtil.getColumnIndexOrThrow(_cursor, "balance");
           final int _cursorIndexOfAccountType = CursorUtil.getColumnIndexOrThrow(_cursor, "accountType");
           final int _cursorIndexOfOwnerName = CursorUtil.getColumnIndexOrThrow(_cursor, "ownerName");
+          final int _cursorIndexOfOwnerId = CursorUtil.getColumnIndexOrThrow(_cursor, "ownerId");
           final Account _result;
           if (_cursor.moveToFirst()) {
             final String _tmpIban;
@@ -111,7 +117,13 @@ public final class AccountDao_Impl implements AccountDao {
             } else {
               _tmpOwnerName = _cursor.getString(_cursorIndexOfOwnerName);
             }
-            _result = new Account(_tmpIban,_tmpBalance,_tmpAccountType,_tmpOwnerName);
+            final String _tmpOwnerId;
+            if (_cursor.isNull(_cursorIndexOfOwnerId)) {
+              _tmpOwnerId = null;
+            } else {
+              _tmpOwnerId = _cursor.getString(_cursorIndexOfOwnerId);
+            }
+            _result = new Account(_tmpIban,_tmpBalance,_tmpAccountType,_tmpOwnerName,_tmpOwnerId);
           } else {
             _result = null;
           }
