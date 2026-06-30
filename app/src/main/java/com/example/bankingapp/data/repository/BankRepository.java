@@ -13,9 +13,7 @@ import com.example.bankingapp.data.model.Transaction;
 import com.example.bankingapp.data.model.WithdrawalRequest;
 import com.example.bankingapp.data.remote.ApiClient;
 import com.example.bankingapp.data.remote.BankApiService;
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+import com.example.bankingapp.util.HashUtils;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -44,7 +42,7 @@ public class BankRepository {
     }
 
     public void login(String username, String password, LoginCallback callback) {
-        String passwordHash = sha256(password);
+        String passwordHash = HashUtils.sha256(password);
         
         executorService.execute(() -> {
             // 1. Offline-Check
@@ -175,22 +173,6 @@ public class BankRepository {
 
     public void getTransactions(String iban, Callback<List<Transaction>> callback) {
         getAuthApiService().getTransactions(iban).enqueue(callback);
-    }
-
-    private String sha256(String base) {
-        try {
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            byte[] hash = digest.digest(base.getBytes(StandardCharsets.UTF_8));
-            StringBuilder hexString = new StringBuilder();
-            for (byte b : hash) {
-                String hex = Integer.toHexString(0xff & b);
-                if (hex.length() == 1) hexString.append('0');
-                hexString.append(hex);
-            }
-            return hexString.toString();
-        } catch (NoSuchAlgorithmException ex) {
-            throw new RuntimeException(ex);
-        }
     }
 
     public interface LoginCallback {
