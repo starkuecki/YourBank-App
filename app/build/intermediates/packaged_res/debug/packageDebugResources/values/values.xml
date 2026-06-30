@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="bg_dark">#0F1115</color>
+    <color name="btn_gray">#9AA0A6</color>
+    <color name="card_light">#F4F7FC</color>
+    <color name="text_main">#111111</color>
+    <color name="text_muted">#7A869A</color>
+    <color name="white">#FFFFFF</color>
+    <string name="account_details">Account Details</string>
+    <string name="app_name">Booby Bank</string>
+    <string name="btn_login">Anmelden</string>
+    <string name="btn_switch_account">Konto wechseln</string>
+    <string name="checking_label">CHECKING</string>
+    <string name="hint_password">Passwort</string>
+    <string name="hint_username">Benutzername</string>
+    <string name="label_address">Address:</string>
+    <string name="label_amount">AMOUNT</string>
+    <string name="label_iban">IBAN:</string>
+    <string name="label_name">Name:</string>
+    <string name="label_note">NOTE (OPTIONAL)</string>
+    <string name="label_to_iban">TO (IBAN)</string>
+    <string name="login_title">Booby Bank Login</string>
+    <string name="money_overview">Here\'s your money overview</string>
+    <string name="nav_account">Account</string>
+    <string name="nav_dashboard">Dashboard</string>
+    <string name="nav_transfer">Send Money</string>
+    <string name="title_send_money">Send Money</string>
+    <string name="welcome_message">Hey there</string>
+    <string name="welcome_user">Hey there, %s</string>
+    <style name="Theme.YourBankApp" parent="Theme.Material3.DayNight.NoActionBar">
+        
+        <item name="colorPrimary">@color/bg_dark</item>
+        <item name="colorOnPrimary">@color/white</item>
+        
+        <item name="colorSecondary">@color/card_light</item>
+        <item name="colorOnSecondary">@color/text_main</item>
+        
+        <item name="android:statusBarColor">@color/white</item>
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
+</resources>
