@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -27,6 +28,7 @@ public class TransactionsFragment extends Fragment {
     private TransactionAdapter adapter;
     private BankRepository repository;
     private ImageButton btnBack;
+    private TextView tvIbanHeader;
 
     @Nullable
     @Override
@@ -35,6 +37,7 @@ public class TransactionsFragment extends Fragment {
 
         rvTransactions = view.findViewById(R.id.rv_transactions);
         btnBack = view.findViewById(R.id.btn_back);
+        tvIbanHeader = view.findViewById(R.id.tv_transaction_iban);
 
         rvTransactions.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new TransactionAdapter();
@@ -46,6 +49,7 @@ public class TransactionsFragment extends Fragment {
         String iban = prefs.getString("logged_in_iban", null);
 
         if (iban != null) {
+            tvIbanHeader.setText(iban);
             loadTransactions(iban);
         }
 

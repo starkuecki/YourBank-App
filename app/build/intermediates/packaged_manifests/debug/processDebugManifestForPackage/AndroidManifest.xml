@@ -25,7 +25,6 @@
         android:label="Booby Bank"
         android:roundIcon="@drawable/booby"
         android:supportsRtl="true"
-        android:testOnly="true"
         android:theme="@style/Theme.YourBankApp"
         android:usesCleartextTraffic="true" >
         <activity

@@ -49,7 +49,7 @@ public class BankRepository {
             Customer localCustomer = customerDao.getCustomerByName(username);
             if (localCustomer != null) {
                 if (localCustomer.getPassword().equals(passwordHash)) {
-                    saveLoginPrefs(username, passwordHash);
+                    saveLoginPrefs(username, passwordHash, localCustomer.getId());
                     // Bei Offline-Login: Sofort Erfolg melden, Accounts im Hintergrund laden
                     fetchAndSaveAccounts(username, passwordHash, localCustomer.getId(), null);
                     callback.onSuccess();
@@ -75,7 +75,8 @@ public class BankRepository {
                             if (customer.getName().equalsIgnoreCase(username)) {
                                 executorService.execute(() -> {
                                     customerDao.saveCustomer(customer);
-                                    saveLoginPrefs(customer.getName(), passwordHash);
+                                    // Wir speichern den offiziellen Namen aus der API (Groß/Kleinschreibung!)
+                                    saveLoginPrefs(customer.getName(), passwordHash, customer.getId());
                                     // Bei Online-Login: Wir warten auf die Konten für das erste Mal
                                     fetchAndSaveAccounts(customer.getName(), passwordHash, customer.getId(), callback);
                                 });
@@ -134,10 +135,11 @@ public class BankRepository {
         });
     }
 
-    private void saveLoginPrefs(String user, String passHash) {
+    private void saveLoginPrefs(String user, String passHash, String userId) {
         prefs.edit()
                 .putString("auth_user", user)
                 .putString("auth_pass_hash", passHash)
+                .putString("logged_in_user_id", userId)
                 .apply();
     }
 
@@ -150,6 +152,10 @@ public class BankRepository {
 
     public LiveData<Customer> getCustomer(String name) {
         return customerDao.getCustomerLiveDataByName(name);
+    }
+
+    public LiveData<List<Account>> getAccountsForUser(String userId) {
+        return accountDao.getAccountsByOwnerId(userId);
     }
 
     private void refreshAccountFromApi(String iban) {
