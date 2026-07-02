@@ -1355,6 +1355,7 @@ color background_floating_material_light
 color background_material_dark
 color background_material_light
 color bg_dark
+color booby_blue
 color bright_foreground_disabled_material_dark
 color bright_foreground_disabled_material_light
 color bright_foreground_inverse_material_dark
@@ -2094,6 +2095,8 @@ color text_main
 color text_muted
 color tooltip_background_dark
 color tooltip_background_light
+color transaktion_green
+color transaktion_red
 color white
 dimen abc_action_bar_content_inset_material
 dimen abc_action_bar_content_inset_with_nav
@@ -3180,7 +3183,7 @@ id buttonPanel
 id cache_measures
 id callMeasure
 id cancel_button
-id card_balance
+id card_account
 id carryVelocity
 id center
 id centerCrop
@@ -3324,6 +3327,8 @@ id linear
 id listMode
 id list_item
 id logo_icon
+id logo_icon_acc
+id logo_icon_trans
 id m3_side_sheet
 id marquee
 id masked
@@ -3434,7 +3439,7 @@ id parent_matrix
 id password_toggle
 id path
 id pathRelative
-id pb_balance_loading
+id pb_dashboard_loading
 id peekHeight
 id percent
 id pin
@@ -3454,6 +3459,7 @@ id right_icon
 id right_side
 id rounded
 id row_index_key
+id rv_accounts
 id rv_transactions
 id save_non_transition_alpha
 id save_overlay_view
@@ -3562,12 +3568,16 @@ id transition_position
 id transition_scene_layoutid_cache
 id transition_transform
 id triangle
-id tv_balance
+id tv_account_balance
+id tv_account_iban
+id tv_account_label
+id tv_account_type_tag
 id tv_city
 id tv_iban
 id tv_name
 id tv_transaction_amount
 id tv_transaction_date
+id tv_transaction_iban
 id tv_transaction_purpose
 id tv_welcome_name
 id unchecked
@@ -3729,6 +3739,7 @@ layout fragment_account
 layout fragment_dashboard
 layout fragment_transactions
 layout fragment_transfer
+layout item_account
 layout item_transaction
 layout m3_alert_dialog
 layout m3_alert_dialog_actions

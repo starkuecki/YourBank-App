@@ -6,6 +6,7 @@ import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import com.example.bankingapp.data.model.Account;
+import java.util.List;
 
 @Dao
 public interface AccountDao {
@@ -15,4 +16,7 @@ public interface AccountDao {
     // LiveData sorgt dafür, dass die UI sich automatisch aktualisiert, wenn sich Daten ändern
     @Query("SELECT * FROM accounts WHERE iban = :iban")
     LiveData<Account> getAccountByIban(String iban);
+
+    @Query("SELECT * FROM accounts WHERE ownerId = :ownerId")
+    LiveData<List<Account>> getAccountsByOwnerId(String ownerId);
 }

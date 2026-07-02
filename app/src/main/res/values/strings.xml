@@ -7,11 +7,11 @@
     <string name="label_name">Name:</string>
     <string name="label_address">Address:</string>
     <string name="label_iban">IBAN:</string>
-    <string name="btn_switch_account">Konto wechseln</string>
+    <string name="btn_switch_account">Switch User</string>
     <string name="login_title">Booby Bank Login</string>
-    <string name="hint_username">Benutzername</string>
-    <string name="hint_password">Passwort</string>
-    <string name="btn_login">Anmelden</string>
+    <string name="hint_username">Name</string>
+    <string name="hint_password">Password</string>
+    <string name="btn_login">Sign in</string>
 
     <!-- Dashboard Strings -->
     <string name="welcome_message">Hey there</string>

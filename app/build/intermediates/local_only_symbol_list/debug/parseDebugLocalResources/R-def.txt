@@ -1,10 +1,13 @@
 R_DEF: Internal format may change without notice
 local
 color bg_dark
+color booby_blue
 color btn_gray
 color card_light
 color text_main
 color text_muted
+color transaktion_green
+color transaktion_red
 color white
 drawable booby
 drawable edittext_rounded_bg
@@ -13,7 +16,7 @@ id btn_back
 id btn_login
 id btn_send_money
 id btn_switch_account
-id card_balance
+id card_account
 id et_amount
 id et_password
 id et_purpose
@@ -21,17 +24,24 @@ id et_recipient_iban
 id et_username
 id fragment_container
 id logo_icon
+id logo_icon_acc
+id logo_icon_trans
 id nav_account
 id nav_dashboard
 id nav_transfer
-id pb_balance_loading
+id pb_dashboard_loading
+id rv_accounts
 id rv_transactions
-id tv_balance
+id tv_account_balance
+id tv_account_iban
+id tv_account_label
+id tv_account_type_tag
 id tv_city
 id tv_iban
 id tv_name
 id tv_transaction_amount
 id tv_transaction_date
+id tv_transaction_iban
 id tv_transaction_purpose
 id tv_welcome_name
 layout activity_login
@@ -40,6 +50,7 @@ layout fragment_account
 layout fragment_dashboard
 layout fragment_transactions
 layout fragment_transfer
+layout item_account
 layout item_transaction
 menu bottom_nav_menu
 string account_details

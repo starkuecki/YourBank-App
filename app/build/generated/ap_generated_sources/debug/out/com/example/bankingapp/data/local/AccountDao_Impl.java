@@ -16,6 +16,7 @@ import java.lang.Exception;
 import java.lang.Override;
 import java.lang.String;
 import java.lang.SuppressWarnings;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -126,6 +127,72 @@ public final class AccountDao_Impl implements AccountDao {
             _result = new Account(_tmpIban,_tmpBalance,_tmpAccountType,_tmpOwnerName,_tmpOwnerId);
           } else {
             _result = null;
+          }
+          return _result;
+        } finally {
+          _cursor.close();
+        }
+      }
+
+      @Override
+      protected void finalize() {
+        _statement.release();
+      }
+    });
+  }
+
+  @Override
+  public LiveData<List<Account>> getAccountsByOwnerId(final String ownerId) {
+    final String _sql = "SELECT * FROM accounts WHERE ownerId = ?";
+    final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 1);
+    int _argIndex = 1;
+    if (ownerId == null) {
+      _statement.bindNull(_argIndex);
+    } else {
+      _statement.bindString(_argIndex, ownerId);
+    }
+    return __db.getInvalidationTracker().createLiveData(new String[] {"accounts"}, false, new Callable<List<Account>>() {
+      @Override
+      @Nullable
+      public List<Account> call() throws Exception {
+        final Cursor _cursor = DBUtil.query(__db, _statement, false, null);
+        try {
+          final int _cursorIndexOfIban = CursorUtil.getColumnIndexOrThrow(_cursor, "iban");
+          final int _cursorIndexOfBalance = CursorUtil.getColumnIndexOrThrow(_cursor, "balance");
+          final int _cursorIndexOfAccountType = CursorUtil.getColumnIndexOrThrow(_cursor, "accountType");
+          final int _cursorIndexOfOwnerName = CursorUtil.getColumnIndexOrThrow(_cursor, "ownerName");
+          final int _cursorIndexOfOwnerId = CursorUtil.getColumnIndexOrThrow(_cursor, "ownerId");
+          final List<Account> _result = new ArrayList<Account>(_cursor.getCount());
+          while (_cursor.moveToNext()) {
+            final Account _item;
+            final String _tmpIban;
+            if (_cursor.isNull(_cursorIndexOfIban)) {
+              _tmpIban = null;
+            } else {
+              _tmpIban = _cursor.getString(_cursorIndexOfIban);
+            }
+            final double _tmpBalance;
+            _tmpBalance = _cursor.getDouble(_cursorIndexOfBalance);
+            final String _tmpAccountType;
+            if (_cursor.isNull(_cursorIndexOfAccountType)) {
+              _tmpAccountType = null;
+            } else {
+              _tmpAccountType = _cursor.getString(_cursorIndexOfAccountType);
+            }
+            final String _tmpOwnerName;
+            if (_cursor.isNull(_cursorIndexOfOwnerName)) {
+              _tmpOwnerName = null;
+            } else {
+              _tmpOwnerName = _cursor.getString(_cursorIndexOfOwnerName);
+            }
+            final String _tmpOwnerId;
+            if (_cursor.isNull(_cursorIndexOfOwnerId)) {
+              _tmpOwnerId = null;
+            } else {
+              _tmpOwnerId = _cursor.getString(_cursorIndexOfOwnerId);
+            }
+            _item = new Account(_tmpIban,_tmpBalance,_tmpAccountType,_tmpOwnerName,_tmpOwnerId);
+            _result.add(_item);
           }
           return _result;
         } finally {

@@ -7,6 +7,30 @@
     android:padding="24dp"
     android:background="@color/white">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp">
+
+        <ImageView
+            android:id="@+id/logo_icon_trans"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentStart="true"
+            android:src="@drawable/booby" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/logo_icon_trans"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="12dp"
+            android:text="@string/app_name"
+            android:textStyle="bold"
+            android:textColor="@color/bg_dark"
+            android:textSize="18sp" />
+    </RelativeLayout>
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

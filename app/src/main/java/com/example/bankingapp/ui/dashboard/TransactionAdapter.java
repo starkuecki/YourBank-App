@@ -6,11 +6,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.bankingapp.R;
 import com.example.bankingapp.data.model.Transaction;
 import java.util.ArrayList;
 import java.util.List;
+
 
 public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.ViewHolder> {
 
@@ -38,10 +40,10 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
         // Wir prüfen das Feld "transactionType", wie es vom Backend geliefert wird
         if ("withdrawal".equalsIgnoreCase(transaction.getTransactionType())) {
             holder.tvAmount.setText(String.format("- $ %,.2f", amount));
-            holder.tvAmount.setTextColor(Color.RED);
+            holder.tvAmount.setTextColor(ContextCompat.getColor(holder.itemView.getContext(),R.color.transaktion_red));
         } else {
             holder.tvAmount.setText(String.format("+ $ %,.2f", amount));
-            holder.tvAmount.setTextColor(Color.GREEN);
+            holder.tvAmount.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.transaktion_green));
         }
     }
 
